@@ -12,3 +12,5 @@ class RotaryPositionalEmbedding(nn.Module):
 
         # Base frequency calculation: inv_freq = 1 / theta^(2i/d)
         inv_freq = 1.0 / (theta ** (torch.arange(0, head_dim, 2).float() / head_dim))
+
+        # Positional angle calculation: theta_t,i = t * inv_freq
