@@ -48,3 +48,8 @@ class RotaryPositionalEmbedding(nn.Module):
         # view([1, 10, 1, 5]) becomes view(1, 10, 1, 5)
         return freqs_cis.view(*shape)
 
+
+    def apply_rotation(self, x: torch.Tensor, freqs_cis: torch.Tensor) -> torch.Tensor:
+        """
+        Applies the RoPe rotation to a Query or Key tensor
+        """
