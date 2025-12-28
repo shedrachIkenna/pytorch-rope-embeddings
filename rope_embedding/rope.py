@@ -41,8 +41,10 @@ class RotaryPositionalEmbedding(nn.Module):
         # raise assertion error if condition is false 
         assert ndim >= 4, "Input tensor must have at least 4 dimensions (B, S, H, D/2)"
 
-        # Create a shape [1, Seq, 1, D/2]
+        # looks at x tensor, loops through each dimension
+        # replace all the dimensions with 1s except dimensions at index 2 and the last index (4)
         shape = [d if i == 1 or i == ndim - 1 else 1 for i, d in enumerate(x.shape)]
-
+    
+        # view([1, 10, 1, 5]) becomes view(1, 10, 1, 5)
         return freqs_cis.view(*shape)
 
