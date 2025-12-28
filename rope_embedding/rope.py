@@ -53,3 +53,8 @@ class RotaryPositionalEmbedding(nn.Module):
         """
         Applies the RoPe rotation to a Query or Key tensor
         """
+        # Reshape vector x from [B, S, H, D] to [B, s, H, [fi, f2]]
+        # This treats (f1, f2) as a complex number f1 + i*f2 
+        x_complex = torch.view_as_complex(x.float().reshape(*x.shape[:-1], -1, 2))
+
+        
