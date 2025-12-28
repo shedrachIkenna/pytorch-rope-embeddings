@@ -34,3 +34,15 @@ class RotaryPositionalEmbedding(nn.Module):
         B - Batch (how many sentences/sequences the transformer sees at once)
         H - Head (How many attention heads)
         """
+
+        # Get the number of dimensions for x 
+        ndim = x.ndim
+
+        # raise assertion error if condition is false 
+        assert ndim >= 4, "Input tensor must have at least 4 dimensions (B, S, H, D/2)"
+
+        # Create a shape [1, Seq, 1, D/2]
+        shape = [d if i == 1 or i == ndim - 1 else 1 for i, d in enumerate(x.shape)]
+
+        return freqs_cis.view(*shape)
+
