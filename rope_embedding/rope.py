@@ -57,4 +57,7 @@ class RotaryPositionalEmbedding(nn.Module):
         # This treats (f1, f2) as a complex number f1 + i*f2 
         x_complex = torch.view_as_complex(x.float().reshape(*x.shape[:-1], -1, 2))
 
+        # Reshape freqs_cis using _reshape_for_broadcast function 
+        freqs_cis_reshaped = self._reshape_for_broadcast(freqs_cis, x_complex)
+
         
