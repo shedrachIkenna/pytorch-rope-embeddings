@@ -60,4 +60,7 @@ class RotaryPositionalEmbedding(nn.Module):
         # Reshape freqs_cis using _reshape_for_broadcast function 
         freqs_cis_reshaped = self._reshape_for_broadcast(freqs_cis, x_complex)
 
-        
+        # Complex multiplication z' = z * e^(i*theta)
+        # z = x_complex
+        # e^(i*theta) = freqs_cis_reshaped
+        x_rotated = x_complex * freqs_cis_reshaped
