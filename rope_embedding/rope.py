@@ -23,4 +23,14 @@ class RotaryPositionalEmbedding(nn.Module):
         # Register freqs_cis as a Buffer so that it's moved with the model but not trained 
         self.register_buffer("freqs_cis", freqs_cis)
 
-        
+    def _reshape_for_broadcast(self, freqs_cis: torch.Tensor, x: torch.Tensor) -> torch.Tensor: 
+        """
+        Reshapes freqs_cis to be compactible for broadcasting across batch and head dimensions
+
+        freqs_cis shape is [Seq, D/2]. We need to broadcast it to [1, Seq, 1, D/2] for matrix multiplication with Q and K which are [B, Seq, H, D/2]
+
+        Seq - number of words/tokens in a sentence/sequence 
+        D/2 - embedding dimensions/2 = feature pairs 
+        B - Batch (how many sentences/sequences the transformer sees at once)
+        H - Head (How many attention heads)
+        """
