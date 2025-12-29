@@ -69,4 +69,5 @@ class RotaryPositionalEmbedding(nn.Module):
         # then, merge it into a single dimension [B, S, H, D]
         x_out = torch.view_as_real(x_rotated).flatten(3)
 
-        
+        # Convert to the same dtype as the input x for precision 
+        return x_out.type_as(x)
