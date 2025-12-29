@@ -64,3 +64,9 @@ class RotaryPositionalEmbedding(nn.Module):
         # z = x_complex
         # e^(i*theta) = freqs_cis_reshaped
         x_rotated = x_complex * freqs_cis_reshaped
+
+        # Take every complex number a + bi and turn it back into two separate real number (a,b), [B, S, H, (a,b)]
+        # then, merge it into a single dimension [B, S, H, D]
+        x_out = torch.view_as_real(x_rotated).flatten(3)
+
+        
