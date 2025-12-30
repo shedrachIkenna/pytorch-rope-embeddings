@@ -72,12 +72,26 @@ class RotaryPositionalEmbedding(nn.Module):
         # Convert to the same dtype as the input x for precision 
         return x_out.type_as(x)
 
-def forward(self, xq: torch.Tensor, xk: torch.Tensor, seqlen: int) -> Tuple[torch.Tensor, torch.Tensor]: 
-    """
-    Applies RoPe to Query (xq) and Key (xk) tensors 
+    def forward(self, xq: torch.Tensor, xk: torch.Tensor, seqlen: int) -> Tuple[torch.Tensor, torch.Tensor]: 
+        """
+        Applies RoPe to Query (xq) and Key (xk) tensors 
 
-    Args: 
-        xq (torch.Tensor): Query tensor [B, S, H, D]
-        xk (torch.Tensor): Key tensor [B, S, H, D]
-        seqlen (int): Current sequence length 
-    """
+        Args: 
+            xq (torch.Tensor): Query tensor [B, S, H, D]
+            xk (torch.Tensor): Key tensor [B, S, H, D]
+            seqlen (int): Current sequence length 
+        """
+
+        if seqlen > self.freqs_cis.shape[0]:
+            raise ValueError(
+                f"Sequence length {seqlen} exceeds precomputed max_seq_len "
+                f"of {self.freqs_cis.shape[0]}. Re-initilize with a larger max_seq_len"
+            )
+        # Select rotation factors (angles) for current sequence length 
+        freqs_cis = self.freqs_cis[:seqlen]
+
+        # Apply rotation 
+        xq_out = self.apply_rotation(xq, freqs_cis)
+        xk_out = self.apply_rotation(xk, freqs_cis)
+
+        return xq_out, xk_out
