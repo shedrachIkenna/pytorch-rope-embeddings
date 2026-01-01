@@ -4,7 +4,7 @@ import torch.nn as nn
 
 class SimpleAttention(nn.Module):
     def __init__(self, dim, n_heads, max_seq_len):
-        super.__init__()
+        super().__init__()
         head_dim = dim // n_heads
         self.n_heads = n_heads
         self.head_dim = head_dim
