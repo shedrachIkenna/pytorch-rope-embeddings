@@ -18,7 +18,7 @@ class SimpleAttention(nn.Module):
         self.Wv = nn.Linear(dim, dim, bias=False)
         self.Wo = nn.Linear(dim, dim, bias=False)
 
-    def forward(self, x, seqlen):
+    def forward(self, x):
         B, S, D = x.shape # Batch, Sequence length and Dimension 
 
         # Project and reshape Q, K, V 
@@ -27,7 +27,7 @@ class SimpleAttention(nn.Module):
         V = self.Wv(x).view(B, S, self.n_heads, self.head_dim)
 
         # Apply RoPe 
-        Q_rotated, K_rotated = self.rope(Q, K, seqlen)
+        Q_rotated, K_rotated = self.rope(Q, K)
 
         # Transpose for scaled dot-product attention (Batch, Head, Seq, Dim)
         Q_r = Q_rotated.transpose(1, 2)
