@@ -74,7 +74,7 @@ class RotaryPositionalEmbedding(nn.Module):
         # Convert to the same dtype as the input x for precision 
         return x_out.type_as(x)
 
-    def forward(self, xq: torch.Tensor, xk: torch.Tensor, seqlen: int) -> Tuple[torch.Tensor, torch.Tensor]: 
+    def forward(self, xq: torch.Tensor, xk: torch.Tensor) -> Tuple[torch.Tensor, torch.Tensor]: 
         """
         Applies RoPe to Query (xq) and Key (xk) tensors 
 
@@ -83,6 +83,9 @@ class RotaryPositionalEmbedding(nn.Module):
             xk (torch.Tensor): Key tensor [B, S, H, D]
             seqlen (int): Current sequence length 
         """
+
+        # get seqlen from tensor 
+        seqlen = xq.shape[1]
 
         if seqlen > self.freqs_cis.shape[0]:
             raise ValueError(
