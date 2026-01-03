@@ -17,7 +17,7 @@ class RotaryPositionalEmbedding(nn.Module):
 
         # Positional angle calculation: theta_t,i = t * inv_freq
         t = torch.arange(max_seq_len, dtype=torch.float32)
-        freqs = torch.outer(t, inv_freq) # shape [max_seq_len, head_dim / 2]
+        freqs = torch.outer(t, inv_freq) 
 
         # Complex Rotation: e^(i*theta) = cos(theta) * i*sin(theta) (Euler's formula)
         freqs_cis = torch.polar(torch.ones_like(freqs), freqs)
