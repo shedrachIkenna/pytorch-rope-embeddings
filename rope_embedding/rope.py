@@ -19,7 +19,7 @@ class RotaryPositionalEmbedding(nn.Module):
         t = torch.arange(max_seq_len, dtype=torch.float32)
         freqs = torch.outer(t, inv_freq) 
 
-        # Complex Rotation: e^(i*theta) = cos(theta) * i*sin(theta) (Euler's formula)
+        # Complex Rotation: e^(i*theta) = cos(theta) + i*sin(theta) (Euler's formula)
         freqs_cis = torch.polar(torch.ones_like(freqs), freqs)
 
         # Register freqs_cis as a Buffer so that it's moved with the model but not trained 
